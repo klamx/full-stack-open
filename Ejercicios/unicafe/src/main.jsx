@@ -7,9 +7,10 @@ const Button = ({ text, clicker }) => {
 
 const Statistic = ({ value, statistic }) => {
   return (
-    <p>
-      {statistic}: {value}
-    </p>
+    <tr>
+      <td>{statistic}</td>
+      <td>{value}</td>
+    </tr>
   )
 }
 
@@ -17,25 +18,26 @@ const Statistics = ({ good, neutral, bad, names }) => {
   const all = good + neutral + bad
   const average = (good - bad) / all
   const positive = (good * 100) / all
+  const statisticsNames = [...names, 'All', 'average', 'positive']
 
   if (all > 0) {
     return (
-
-      <div>
-        <Statistic statistic={names[0]} value={good} />
-        <Statistic statistic={names[1]} value={neutral} />
-        <Statistic statistic={names[2]} value={bad} />
-        <p>All: {all}</p>
-        <p>Average: {average}</p>
-        <p>Positive: {positive} %</p>
-      </div>
+      <tbody>
+        <Statistic statistic={statisticsNames[0]} value={good} />
+        <Statistic statistic={statisticsNames[1]} value={neutral} />
+        <Statistic statistic={statisticsNames[2]} value={bad} />
+        <Statistic statistic={statisticsNames[3]} value={all} />
+        <Statistic statistic={statisticsNames[4]} value={average} />
+        <Statistic statistic={statisticsNames[5]} value={positive} />
+      </tbody>
     )
   }
   return (
-
-    <div>
-      <p>No feedback given</p>
-    </div>
+    <tbody>
+      <tr>
+        <td>No feedback given</td>
+      </tr>
+    </tbody>
   )
 }
 
@@ -71,8 +73,14 @@ const App = () => {
       </div>
       <div>
         <h3>statistics</h3>
-
-        <Statistics good={good} neutral={neutral} bad={bad} names={statistics}/>
+        <table>
+          <Statistics
+            good={good}
+            neutral={neutral}
+            bad={bad}
+            names={statistics}
+          />
+        </table>
       </div>
     </div>
   )
