@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
+import './style.css'
 
 const History = (props) => {
   if (props.allClicks.length === 0) {
@@ -10,6 +11,10 @@ const History = (props) => {
 
 const Button = ({ onClick, text }) => {
   return <button onClick={onClick}>{text}</button>
+}
+
+const Display = (props) => {
+  return <div>{props.value}</div>
 }
 
 const App = () => {
@@ -29,13 +34,21 @@ const App = () => {
   }
 
   return (
-    <div>
-      {left}
-      <Button onClick={handleLeftClick} text={'left'}/>
-      <Button onClick={handleRightClick} text={'right'}/>
-      {right}
+    <div className='container'>
+      <div className='container__click__counter'>
+        <div className='counter__block'>
+          <Display value={left} />
+          <Button onClick={handleLeftClick} text={'left'} />
+        </div>
+        <div className='counter__block'>
+          <Button onClick={handleRightClick} text={'right'} />
+          <Display value={right} />
+        </div>
+      </div>
       {/* <p>{allClicks.join(',')}</p> */}
-      <History allClicks={allClicks} />
+      <div>
+        <History allClicks={allClicks} />
+      </div>
     </div>
   )
 }
