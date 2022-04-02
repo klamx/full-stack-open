@@ -1,0 +1,8 @@
+.show-all {
+  width: 5rem;
+}
+
+.notes {
+  height: 10rem;
+  overflow: auto;
+}
