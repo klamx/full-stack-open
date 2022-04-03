@@ -9,7 +9,7 @@ function App () {
   }
   const addPerson = (e) => {
     e.preventDefault()
-    setPersons((prevPersons) => [...prevPersons, { name: newName }])
+    setPersons([...persons, { name: newName }])
     setNewName('')
   }
 
@@ -32,7 +32,7 @@ function App () {
       <h2>Numbers</h2>
       <ul>
         {persons.map((person) => {
-          return <li key={persons.length + 1}>{person.name}</li>
+          return <li key={person.name}>{person.name}</li>
         })}
       </ul>
     </div>
