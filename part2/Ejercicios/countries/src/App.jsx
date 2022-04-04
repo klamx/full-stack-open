@@ -10,6 +10,13 @@ function App () {
     setSearchCountry(e.target.value)
   }
 
+  const showDetails = (e) => {
+    // const index = countries.findIndex(
+    //   (ele) => ele.name.common === e.target.value
+    // )
+    setSearchCountry(e.target.value)
+  }
+
   useEffect(() => {
     if (searchCountry === '') return
     axios
@@ -30,11 +37,20 @@ function App () {
           <p>Too many matches, specify another filter</p>
         )}
         {countries.length <= 10 && (
-          <ul>
+          <div style={{ marginTop: '1rem' }}>
             {countries.map((country) => {
-              return <li key={country.name.official}>{country.name.common}</li>
+              return (
+                <div key={country.name.official}>
+                  <span style={{ marginRight: '.3rem' }}>
+                    {country.name.common}
+                  </span>
+                  <button onClick={showDetails} value={country.name.common}>
+                    show
+                  </button>
+                </div>
+              )
             })}
-          </ul>
+          </div>
         )}
         {countries.length === 1 && (
           <div key={countries[0].name.common}>
@@ -42,10 +58,6 @@ function App () {
             <p>capital {countries[0].capital[0]}</p>
             <p>population {countries[0].population}</p>
             <h3>languages</h3>
-            {/* {countries[0].languages.map((lan) => {
-              console.log(lan)
-              return <p key={countries[0].name + '1'}>hola</p>
-            })} */}
             <ul>
               {Object.keys(countries[0].languages).map((keyName) => {
                 console.log(keyName)
