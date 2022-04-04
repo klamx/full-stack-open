@@ -1,11 +1,22 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Note from './components/Note/Note'
 import './App.css'
+import axios from 'axios'
 
-const App = (props) => {
-  const [notes, setNotes] = useState(props.notes)
+const App = () => {
+  const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
+
+  const hook = () => {
+    console.log('effect')
+    axios.get('http://localhost:3001/notes').then((response) => {
+      console.log('promise fulfilled')
+      setNotes(response.data)
+    })
+  }
+  useEffect(hook, [])
+  console.log('render', notes.length, 'notes')
 
   const notesToShow = showAll
     ? notes
@@ -35,7 +46,7 @@ const App = (props) => {
       <button className='show-all' onClick={() => setShowAll(!showAll)}>
         {showAll ? 'important' : 'all'}
       </button>
-      <ul className="notes">
+      <ul className='notes'>
         {notesToShow.map((note) => {
           return <Note key={note.id} note={note} />
         })}
