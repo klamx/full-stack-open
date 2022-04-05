@@ -31,10 +31,13 @@ const App = () => {
       date: new Date().toISOString(),
       important: Math.random() < 0.5
     }
-    setNotes((prevNotes) => {
-      return [...prevNotes, noteObj]
+    axios.post('http://localhost:3001/notes', noteObj).then((response) => {
+      console.log(response)
+      setNotes((prevNotes) => {
+        return [...prevNotes, noteObj]
+      })
+      setNewNote('')
     })
-    setNewNote('')
   }
 
   const addNewNote = (event) => {
