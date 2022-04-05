@@ -4,6 +4,14 @@ import React, { useState, useEffect } from 'react'
 function App () {
   const [countries, setCountries] = useState([])
   const [searchCountry, setSearchCountry] = useState('')
+  const [isOneCountry, setIsOneCountry] = useState(false)
+  const [weather, setWeather] = useState({
+    name: '',
+    temperature: '',
+    img: '',
+    wind: '',
+    speed: ''
+  })
 
   const setSearchValue = (e) => {
     e.preventDefault()
@@ -15,8 +23,10 @@ function App () {
     //   (ele) => ele.name.common === e.target.value
     // )
     setSearchCountry(e.target.value)
+    setIsOneCountry(true)
   }
 
+  // countries
   useEffect(() => {
     if (searchCountry === '') return
     axios
@@ -24,9 +34,38 @@ function App () {
       .then(({ data }) => {
         console.log(data)
         setCountries(data)
+        if (data.length === 1) {
+          setIsOneCountry(true)
+        }
+        console.log(isOneCountry)
       })
       .catch((e) => console.log(e))
   }, [searchCountry])
+
+  useEffect(() => {
+    if (!isOneCountry) return
+    setIsOneCountry(false)
+    axios
+      .get(
+        `http://api.weatherstack.com/current?access_key=${
+          import.meta.env.VITE_WEATHER_APi_KEY
+        }&query=${countries[0].capital[0]}`
+      )
+      .then(({ data }) => {
+        setWeather({
+          name: data.location.name,
+          temperature: data.current.temperature,
+          img: data.current.weather_icons[0],
+          wind: data.current.wind_speed,
+          dir: data.current.wind_dir
+        })
+        console.log(weather)
+      })
+  }, [isOneCountry])
+
+  // if (countries.length === 1) {
+  //   setSearchCountry(countries[0].name.common)
+  // }
 
   return (
     <div>
@@ -69,6 +108,15 @@ function App () {
               })}
             </ul>
             <img width='150rem' src={countries[0].flags.svg} />
+            <h3>Weather in {weather.name}</h3>
+            <b>temperature: </b>
+            {weather.temperature}
+            <div>
+              <img src={weather.img} alt='' />
+            </div>
+            <b>wind: </b>
+            {weather.wind} mph direction {weather.dir}
+            {console.log(weather)}
           </div>
         )}
       </div>
