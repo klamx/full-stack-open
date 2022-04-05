@@ -110,7 +110,7 @@ function App () {
             <img width='150rem' src={countries[0].flags.svg} />
             <h3>Weather in {weather.name}</h3>
             <b>temperature: </b>
-            {weather.temperature}
+            {weather.temperature} Celcius
             <div>
               <img src={weather.img} alt='' />
             </div>
