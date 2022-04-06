@@ -9,6 +9,7 @@
     "server": "json-server --port 3001 --watch db.json"
   },
   "dependencies": {
+    "axios": "^0.26.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },

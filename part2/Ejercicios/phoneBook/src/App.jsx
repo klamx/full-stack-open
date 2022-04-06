@@ -1,16 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Form from './components/Form'
 import Filter from './components/Filter'
 import Show from './components/Show'
+import personsService from './services/persons'
 
 function App () {
-  const [persons, setPersons] = useState([
-    { name: 'Jhon doe', number: '301' },
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ])
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterValue, setFilterValue] = useState('')
@@ -31,15 +26,48 @@ function App () {
     e.preventDefault()
     if (
       persons.find((person) => {
+        return person.name.toLowerCase() === newName.toLowerCase()
+      }) &&
+      !persons.find((person) => {
         return person.number === newNumber
       })
     ) {
-      alert(`${newNumber} is already added to phonebook`)
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook, replace the odl number whit a new one?`
+        )
+      ) {
+        const per = persons.find(
+          (e) => e.name.toLowerCase() === newName.toLowerCase()
+        )
+        const newPerson = { name: per.name, number: newNumber }
+        console.log('bewperson', newPerson)
+        personsService.update(per.id, newPerson).then((response) => {
+          setPersons(
+            persons.map((person) => {
+              return person.id !== response.id ? person : response
+            })
+          )
+        })
+      }
+    } else if (
+      persons.find((person) => {
+        return person.name.toLowerCase() === newName.toLowerCase()
+      })
+    ) {
+      alert(`${newName} is already added to phonebook`)
       return
     }
-    setPersons([...persons, { name: newName, number: newNumber }])
+
+    const newPerson = { name: newName, number: newNumber }
+
+    personsService
+      .create(newPerson)
+      .then((response) => setPersons([...persons, response]))
+      .catch((error) => console.log(error))
+    // setPersons([...persons, { name: newName, number: newNumber }])
     setNewName('')
-    setNewName('')
+    setNewNumber('')
   }
 
   const personsToShow =
@@ -48,6 +76,24 @@ function App () {
         person.name.toLowerCase().includes(filterValue.toLowerCase())
       )
       : persons
+
+  useEffect(() => {
+    personsService.getAll().then((response) => setPersons(response))
+  }, [persons])
+
+  const personToDelete = (id) => {
+    if (
+      !window.confirm(
+        `desea eliminar a ${persons.find((e) => e.id === id).name}`
+      )
+    ) {
+      return
+    }
+    personsService
+      .deleted(id)
+      // .then((response) => console.log(response))
+      .catch((error) => console.log(error))
+  }
 
   return (
     <div>
@@ -62,7 +108,7 @@ function App () {
         changeNewNumber={changeNewNumber}
       />
       <h2>Numbers</h2>
-      <Show personsToShow={personsToShow} />
+      <Show personsToShow={personsToShow} personToDelete={personToDelete} />
     </div>
   )
 }
