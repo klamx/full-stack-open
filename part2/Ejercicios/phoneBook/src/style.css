@@ -1,0 +1,12 @@
+.message {
+  align-items: center;
+  background: #ddd;
+  border: 2px solid #00af00;
+  color: #00af00;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 1.5rem;
+  justify-content: center;
+  margin-bottom: 5px;
+  min-height: 2rem;
+}
