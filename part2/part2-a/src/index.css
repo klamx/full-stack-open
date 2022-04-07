@@ -1,0 +1,13 @@
+.note {
+  color: #aaa;
+  font-size: 1rem;
+  padding-top: 3px;
+}
+
+.error {
+  color: #dd0000;
+  background: #ddd;
+  font-size: 1.5rem;
+  border: 5px solid;
+  margin-bottom: 10px;
+}

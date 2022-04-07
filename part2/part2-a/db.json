@@ -23,18 +23,6 @@
       "id": 4,
       "date": "2022-04-05T03:26:19.096Z",
       "important": false
-    },
-    {
-      "content": "esto es una nota",
-      "id": 5,
-      "date": "2022-04-05T03:28:36.082Z",
-      "important": true
-    },
-    {
-      "content": "sasd",
-      "id": 6,
-      "date": "2022-04-06T01:27:20.261Z",
-      "important": false
     }
   ]
 }
