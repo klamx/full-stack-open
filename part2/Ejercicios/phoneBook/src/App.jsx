@@ -41,7 +41,6 @@ function App () {
           (e) => e.name.toLowerCase() === newName.toLowerCase()
         )
         const newPerson = { name: per.name, number: newNumber }
-        console.log('bewperson', newPerson)
         personsService.update(per.id, newPerson).then((response) => {
           setPersons(
             persons.map((person) => {
@@ -49,6 +48,7 @@ function App () {
             })
           )
         })
+        return
       }
     } else if (
       persons.find((person) => {
@@ -70,17 +70,6 @@ function App () {
     setNewNumber('')
   }
 
-  const personsToShow =
-    filterValue !== ''
-      ? persons.filter((person) =>
-        person.name.toLowerCase().includes(filterValue.toLowerCase())
-      )
-      : persons
-
-  useEffect(() => {
-    personsService.getAll().then((response) => setPersons(response))
-  }, [persons])
-
   const personToDelete = (id) => {
     if (
       !window.confirm(
@@ -91,9 +80,21 @@ function App () {
     }
     personsService
       .deleted(id)
-      // .then((response) => console.log(response))
+      .then((response) => console.log(response))
       .catch((error) => console.log(error))
+    setPersons(persons.filter((person) => person.id !== id))
   }
+
+  useEffect(() => {
+    personsService.getAll().then((response) => setPersons(response))
+  }, [])
+
+  const personsToShow =
+    filterValue !== ''
+      ? persons.filter((person) =>
+        person.name.toLowerCase().includes(filterValue.toLowerCase())
+      )
+      : persons
 
   return (
     <div>

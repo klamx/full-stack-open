@@ -2,7 +2,7 @@
   "persons": [
     {
       "name": "Jhon doe",
-      "number": "301",
+      "number": "303",
       "id": 1
     },
     {
@@ -24,11 +24,6 @@
       "id": 5,
       "name": "Mary Poppendieck",
       "number": "39-23-6423122"
-    },
-    {
-      "name": "Juan Perez",
-      "number": "123",
-      "id": 6
     }
   ]
 }
