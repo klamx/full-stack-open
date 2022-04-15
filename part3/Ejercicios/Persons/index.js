@@ -1,7 +1,8 @@
-const { response } = require('express')
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 app.use(express.json())
+app.use(morgan('tiny'))
 
 let persons = [
   {
@@ -27,6 +28,11 @@ let persons = [
 ]
 
 const uuid = () => Math.random().toString(36).slice(2)
+
+// no se que pedo
+app.get('/images/icons/gear.png', (_, response) => {
+  response.end()
+})
 
 app.get('/api/persons', (_, response) => {
   response.json(persons)
