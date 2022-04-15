@@ -40,6 +40,19 @@ app.get('/api/info', (_, response) => {
   `)
 })
 
+app.get('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id)
+  const person = persons.find((person) => {
+    return person.id === id
+  })
+  console.log(person)
+  if (!person) {
+    response.status(404).send('<h1>Error 404 not found </h1>')
+  }
+
+  response.json(person)
+})
+
 const PORT = 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
