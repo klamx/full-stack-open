@@ -2,7 +2,12 @@ const express = require('express')
 const morgan = require('morgan')
 const app = express()
 app.use(express.json())
-app.use(morgan('tiny'))
+
+morgan.token('data', (request, _) => {
+  return JSON.stringify(request.body)
+})
+
+app.use(morgan(':method :url :status :response-time ms - :res[content-length] :data'))
 
 let persons = [
   {
@@ -35,7 +40,7 @@ app.get('/images/icons/gear.png', (_, response) => {
 })
 
 app.get('/api/persons', (_, response) => {
-  response.json(persons)
+  return response.json(persons)
 })
 
 app.get('/api/info', (_, response) => {
