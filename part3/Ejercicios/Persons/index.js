@@ -64,6 +64,23 @@ app.delete('/api/persons/:id', (request, response) => {
 
 app.post('/api/persons', (request, response) => {
   const { name, number } = request.body
+  if (!name && !number) {
+    response.status(400).json({ error: 'you must send a name and a number' })
+    return
+  } else if (!name) {
+    response.status(400).json({ error: 'you must send a name' })
+    return
+  } else if (!number) {
+    response.status(400).json({ error: 'you must send a number' })
+    return
+  }
+
+  const findedName = persons.filter((person) => person.name === name)
+  if (findedName.length > 0) {
+    response.status(400).json({ error: 'name must be unique' })
+    return
+  }
+
   const newPerson = { id: uuid(), name, number }
   persons = [...persons, newPerson]
   response.json(newPerson)
