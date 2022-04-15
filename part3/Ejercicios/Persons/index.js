@@ -5,26 +5,28 @@ app.use(express.json())
 
 let persons = [
   {
-    id: 1,
+    id: 'jnxcmrtqpqj',
     name: 'Arto Hellas',
     number: '040-123456',
   },
   {
-    id: 2,
+    id: 'ym8x3fhqp4',
     name: 'Ada Lovelace',
     number: '39-44-5323523',
   },
   {
-    id: 3,
+    id: 'o2wpcou2tq',
     name: 'Dan Abramov',
     number: '12-43-234345',
   },
   {
-    id: 4,
+    id: 'i3pw7jvx8l',
     name: 'Mary Poppendieck',
     number: '39-23-6423122',
   },
 ]
+
+const uuid = () => Math.random().toString(36).slice(2)
 
 app.get('/api/persons', (_, response) => {
   response.json(persons)
@@ -41,7 +43,7 @@ app.get('/api/info', (_, response) => {
 })
 
 app.get('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
+  const id = request.params.id
   const person = persons.find((person) => {
     return person.id === id
   })
@@ -58,6 +60,13 @@ app.delete('/api/persons/:id', (request, response) => {
   const newPersons = persons.filter((person) => person.id !== id)
   persons = [...newPersons]
   response.status(204).end()
+})
+
+app.post('/api/persons', (request, response) => {
+  const { name, number } = request.body
+  const newPerson = { id: uuid(), name, number }
+  persons = [...persons, newPerson]
+  response.json(newPerson)
 })
 
 const PORT = 3001
