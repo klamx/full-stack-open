@@ -1,6 +1,17 @@
 const express = require('express')
+const cors = require('cors')
+const morgan = require('morgan')
+
 const app = express()
 app.use(express.json())
+app.use(cors())
+// app.use(morgan('tiny'))
+
+morgan.token('data', (request, _) => {
+  return JSON.stringify(request.body)
+})
+
+app.use(morgan(':method :url :status :response-time ms - :data'))
 
 let notes = [
   {
@@ -59,6 +70,18 @@ app.post('/api/notes', (request, response) => {
   const note = { id, content, date, important }
   notes = [...notes, note]
   response.json(note)
+})
+
+app.put('/api/notes/:id', (request, response) => {
+  const id = Number(request.params.id)
+  const note = notes.find((note) => note.id === id)
+  if (note) {
+    notes = notes.map((note) => (note.id === id ? request.body : note))
+    response.json(note)
+  } else {
+    response.status(404).send('<h1>Error not found (401)</h1>')
+    // response.status(404).end()
+  }
 })
 
 const PORT = 3001
